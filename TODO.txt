@@ -1,3 +1,19 @@
-##[ ] 1) make the graph to grow in a sphier shape
- - keep original version as a baseline
- - make the graph grow in a sphere shape
+##[X] 1) Save csv with ganerated graph
+##[X] 2) Check code to generate the graph
+##[X] 3) Come up with a graph visualisation
+##[ ] 4) Setup bash model to run in the terminal
+##[ ] 5) Explain How I create the graph
+##[ ] 5) Explain How I create the visualisation
+##[ ] 6) I must ask her to develop a method to analyses the whole graphs dataset
+    - Probably using excel
+    - There other tools can load the graph dataset
+    - OBS: We will be able to know the best parameters/setting to create the graph
+##[ ] 7) Think toguether how set paramether for the graph
+    - We may try to start with more terms/titles/topics ??
+    - Turn on the filter for huge_data colection 
+    - How many interations ??
+    - Should we use how many nodes for visualisatio??
+    - OBS: She may experiment with the bash too for graph visualisation
+
+
+
