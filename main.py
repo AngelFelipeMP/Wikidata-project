@@ -11,14 +11,26 @@ import config
     
 if __name__ == "__main__":
     
-    # #Create a relationship generator
-    # rg = RelationshipGenerator()
-    # rg.scan("Public Policy")
-    # rg.scan(repeat=10) ##depth
+    #Create a relationship generator
+    rg = RelationshipGenerator()
+    rg.scan("Public Policy")
+    rg.scan("Agricultural policy")
+    rg.scan("Cultural policy")
+    rg.scan("Economic Policy")
+    rg.scan("Education policy")
+    rg.scan("Employment policy")
+    rg.scan("Energy policy")
+    rg.scan("Environmental Policy")
+    rg.scan("Foreign policy")
+    rg.scan("Health Policy")
+    rg.scan("Immigration policy")
+    rg.scan("Social Policy")
+
+    rg.scan(repeat=20) ##depth 
     
     # #Save graph in a  csv file
-    # df = pd.DataFrame(rg.links, columns=["start", "end", "weight"])
-    # df.to_csv(config.LOGS_PATH + '/' + 'links.csv', index=False)
+    df = pd.DataFrame(rg.links, columns=["start", "end", "weight"])
+    df.to_csv(config.LOGS_PATH + '/' + 'links.csv', index=False)
     
     #Load graph from a  csv file
     df = pd.read_csv(config.LOGS_PATH + '/' + 'links.csv')
@@ -38,6 +50,6 @@ if __name__ == "__main__":
     create_graph(rg=simplify_rg, focus='Public Policy', figure_name='simplified_graph_with_focus.png')
     
     
-    #Plot graph with simplified_plot function
-    tg = simplified_plot(rg_links=df.values.tolist(), topics=['Public Policy'], depth=1, max_size=20, huge_data=False)
+    # #Plot graph with simplified_plot function
+    # tg = simplified_plot(rg_links=df.values.tolist(), topics=['Public Policy'], depth=1, max_size=20, huge_data=False)
     
