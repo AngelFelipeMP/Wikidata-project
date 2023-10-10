@@ -14,11 +14,9 @@ if __name__ == "__main__":
     #Create a relationship generator
     rg = RelationshipGenerator()
     rg.scan("Public Policy")
-    rg.scan("Agricultural policy")
     rg.scan("Cultural policy")
     rg.scan("Economic Policy")
     rg.scan("Education policy")
-    rg.scan("Employment policy")
     rg.scan("Energy policy")
     rg.scan("Environmental Policy")
     rg.scan("Foreign policy")
@@ -26,7 +24,7 @@ if __name__ == "__main__":
     rg.scan("Immigration policy")
     rg.scan("Social Policy")
 
-    rg.scan(repeat=20) ##depth 
+    rg.scan(repeat=10) ##depth 
     
     # #Save graph in a  csv file
     df = pd.DataFrame(rg.links, columns=["start", "end", "weight"])

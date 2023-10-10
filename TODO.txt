@@ -26,3 +26,5 @@
 ##[X] 2) From How many pages should we stract the ferecences
 ##[X] 3) Fix titlo to get the references
 ##[X] 4) I may use the python wiki api go get the HTML of the page
+##[X] 5) Get a sample of the references
+##[X] 6) Sen the samples for her to analyses

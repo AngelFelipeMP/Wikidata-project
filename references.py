@@ -1,44 +1,20 @@
 # Wikipedia API
 import wikipedia as wp
-
-#TODO: Check how to get the references from a page
-#TODO: I should check the json retrived from the WIKI API
-page = wp.page("Public Policy")
-page.html()
-
-
-import requests
 import csv
 from bs4 import BeautifulSoup
 from config import *
 import pandas as pd
 
-WIKIPEDIA_API_URL = "https://en.wikipedia.org/w/api.php"
-
-
 def get_references(page_title):
     """
     Get references from the given Wikipedia page.
     """
-    params = {
-        'action': 'parse',
-        'format': 'json',
-        'page': page_title,
-        'prop': 'text'
-    }
-
-    response = requests.get(WIKIPEDIA_API_URL, params=params)
-    data = response.json()
-
-    if "parse" in data:
-        # soup = BeautifulSoup(page.html(), 'html.parser')
-        soup = BeautifulSoup(data["parse"]["text"]["*"], 'html.parser')
-
-        # Extract all <cite> tags which hold citation data
-        citations = soup.find_all('cite')
-        return [cite.get_text(strip=True) for cite in citations]
-    else:
-        return []
+    page = wp.page(page_title)
+    soup = BeautifulSoup(page.html(), 'html.parser')
+    # citations = soup.find_all('cite')
+    citations = references = soup.find_all('li', id=lambda x: x and x.startswith('cite_note-'))
+    
+    return [cite.get_text(strip=True) for cite in citations]
 
 
 def save_to_csv(titles, filename='output.csv'):
@@ -56,10 +32,14 @@ def save_to_csv(titles, filename='output.csv'):
             print(f"References for {title} saved.")
 
         print(f"CSV file saved as {filename}")
+        
+def has_duplicates(lst):
+    return len(lst) != len(set(lst))
 
 
 if __name__ == "__main__":
     #Load graph from a  csv file
     df = pd.read_csv(LOGS_PATH + '/' + 'links.csv')
-    print(df['start'].unique())
-    save_to_csv(df['start'].unique()[:3], filename='references.csv')
+    all_unique_pages = pd.concat([df['start'].str.lower(), df['end'].str.lower()]).unique()
+    ##COMMENT: get referenecs for the top 10 pages
+    save_to_csv(df['start'].unique()[:10], filename='references.csv')
