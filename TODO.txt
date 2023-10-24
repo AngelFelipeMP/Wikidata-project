@@ -28,8 +28,15 @@
 ##[X] 4) I may use the python wiki api go get the HTML of the page
 ##[X] 5) Get a sample of the references
 ##[X] 6) Sen the samples for her to analyses
-##[ ] 7) How to connect to Wikidata python
-##[ ] 8) Check open refine file she sent 
-##[ ] 9) Check OpenRefine: Download and use
-##[X] 10) Check why some pages do not have Qids
-##[ ] 11) Fix case on the graph
+##[X] 7) Check why some pages do not have Qids
+##[X] 8) Check OpenRefine: Download
+
+##[ ] 9) Fix case on the graph
+##[ ] 10) remove: 
+        i) Links that are not WP pages 
+        ii) Links that are WD pages but not WP pages
+
+##[ ] 11) How to connect to Wikidata python
+##[ ] 12) Check open refine file she sent 
+##[ ] 13) Check OpenRefine: use
+
