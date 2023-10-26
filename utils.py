@@ -1,6 +1,9 @@
 # Data manipulation
 import pandas as pd
 import random
+from icecream import install
+install()
+from icecream import ic
 
 # Wikipedia API
 import wikipedia as wp
@@ -9,10 +12,10 @@ from wikipedia.exceptions import DisambiguationError, PageError
 # Plotting
 import networkx as nx
 import matplotlib.pyplot as plt
+from tqdm import tqdm
 
 # Configuration
 import config
-
 
 ########################### CRIATING GRAPH ###########################
 
@@ -23,6 +26,7 @@ class RelationshipGenerator():
         self.links = [] # [start, end, weight]
 
     def scan(self, start=None, repeat=0):
+        ##TODO: check if the start exist and/or get the correct title
         """Start scanning from a specific word, or from internal database
         
         Args:
@@ -32,10 +36,13 @@ class RelationshipGenerator():
         """
         while repeat >= 0:
 
+            ##DEBUG
             # should check if start page exists
             # and haven't already scanned
-            if start in [l[0] for l in self.links]:
-                raise Exception("Already scanned")
+            # if start in [l[0] for l in self.links]:
+            if start is not None:
+                if start.lower() in [l[0].lower() for l in self.links]:
+                    raise Exception("Already scanned")
 
             term_search = True if start is not None else False
 
@@ -48,9 +55,14 @@ class RelationshipGenerator():
             try:
                 # Fetch the page through the Wikipedia API
                 page = wp.page(start)
-                links = list(set(page.links))
+                ##DEBUG
+                start = page.title
+                links  = clean_links(list(set(page.links))[-5:])
+                ##TODO add a fuction that remove non exiting pages and grab the write title
+                # links = list(set(page.links))
                 # ignore some uninteresting terms
                 links = [l for l in links if not self.ignore_term(l)]
+
 
                 # Add links to database
                 link_weights = []
@@ -60,15 +72,24 @@ class RelationshipGenerator():
                 
                 link_weights = [w / max(link_weights) for w in link_weights]
 
+                ##DEBUG
+                # total_nodes_before_interation = set([n[1] for n in self.links])
+                total_nodes_before_interation = set([l[1] for l in self.links] + [l[0] for l in self.links])
                 for i, link in enumerate(links):
-                    self.links.append([start, link.lower(), link_weights[i] + 2 * int(term_search)]) # 3 works pretty well
+                    ##DEBUG
+                    # self.links.append([start, link.lower(), link_weights[i] + 2 * int(term_search)]) # 3 works pretty well
+                    self.links.append([start, link, link_weights[i] + 2 * int(term_search)]) # 3 works pretty well
 
                 # Print some data to the user on progress
                 explored_nodes = set([l[0] for l in self.links])
                 explored_nodes_count = len(explored_nodes)
-                total_nodes = set([l[1] for l in self.links])
+                ##TODO fix how we caculate total_nodels
+                # total_nodes = set([l[1] for l in self.links])
+                total_nodes = set([l[1] for l in self.links] + [l[0] for l in self.links]) 
                 total_nodes_count = len(total_nodes)
-                new_nodes = [l.lower() for l in links if l not in total_nodes]
+                # ##DEBUG
+                # new_nodes = [l.lower() for l in links if l not in total_nodes]
+                new_nodes = [l for l in links if l not in total_nodes_before_interation]
                 new_nodes_count = len(new_nodes)
                 print(f"New nodes added: {new_nodes_count}, Total Nodes: {total_nodes_count}, Explored Nodes: {explored_nodes_count}")
 
@@ -150,6 +171,23 @@ class RelationshipGenerator():
             return True
         return False
 
+########################### LINKS VERIFICATION #######################
+def clean_links(links):
+    """
+    i) Remove links that don't connect to a WP page
+    ii) Get link title with correct case and spelling
+    """
+    links_cleaned = set()
+    
+    for l in tqdm(links):
+        try:
+            page = wp.page(l)
+            links_cleaned.add(page.title)
+
+        except (DisambiguationError, PageError):
+            pass
+        
+    return list(links_cleaned)
 
 
 ########################### SIMPLIFY GRAPH ###########################
@@ -267,7 +305,7 @@ def create_graph(rg, focus=None, figure_name="my_plot.png"):
 
 ########################### SUMMARIZATION ###########################
 
-def simplified_plot(rg_links=[], topics=["tests"], depth=20, max_size=20, huge_data=False):
+def simplified_plot(rg_links=[], topiz=["tests"], depth=20, max_size=20, huge_data=False):
 
     rg = RelationshipGenerator()
     
@@ -287,4 +325,3 @@ def simplified_plot(rg_links=[], topics=["tests"], depth=20, max_size=20, huge_d
     plt.show()
 
     return rg
-
