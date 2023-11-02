@@ -57,7 +57,7 @@ class RelationshipGenerator():
                 page = wp.page(start)
                 ##DEBUG
                 start = page.title
-                links  = clean_links(list(set(page.links))[-5:])
+                links  = clean_links(list(set(page.links)))
                 ##TODO add a fuction that remove non exiting pages and grab the write title
                 # links = list(set(page.links))
                 # ignore some uninteresting terms
@@ -100,6 +100,14 @@ class RelationshipGenerator():
 
             repeat -= 1
             start = None
+            
+            ##TODO save every braching
+            # #Save graph in a  csv file
+            df = pd.DataFrame(self.links, columns=["start", "end", "weight"])
+            df.to_csv(config.LOGS_PATH + '/' + 'links.csv', index=False)
+            if repeat > -1:
+                tqdm.write(f'Remaining branching: {repeat}')
+            
         
     def find_starting_point(self):
         """Find the best place to start when no input is given"""
@@ -184,7 +192,8 @@ def clean_links(links):
             page = wp.page(l)
             links_cleaned.add(page.title)
 
-        except (DisambiguationError, PageError):
+        # except (DisambiguationError, PageError, KeyError):
+        except:
             pass
         
     return list(links_cleaned)
