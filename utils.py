@@ -21,9 +21,10 @@ import config
 
 class RelationshipGenerator():
     """Generates relationships between terms, based on wikipedia links"""
-    def __init__(self):
+    def __init__(self, graph_path=str):
         """Links are directional, start + end, they should also have a weight"""
         self.links = [] # [start, end, weight]
+        self.graph_path = graph_path
 
     def scan(self, start=None, repeat=0):
         """Start scanning from a specific word, or from internal database
@@ -87,7 +88,7 @@ class RelationshipGenerator():
             
             # #Save graph in a  csv file
             df = pd.DataFrame(self.links, columns=["start", "end", "weight"])
-            df.to_csv(config.LOGS_PATH + '/' + 'links.csv', index=False)
+            df.to_csv(self.graph_path, index=False)
             if repeat > -1:
                 tqdm.write(f'Remaining branching: {repeat}')
             
@@ -236,7 +237,7 @@ def add_focus_point(links, focus="on me", focus_factor=3):
 
     return links
 
-def create_graph(rg, focus=None, figure_name="my_plot.png"):
+def plot_graph(rg, focus=None, figure_path=str):
 
     links = rg.links
     links = remove_self_references(links)
@@ -290,9 +291,10 @@ def create_graph(rg, focus=None, figure_name="my_plot.png"):
         with_labels=True,
     )
 """
+    plt.savefig(figure_path)
     # plt.box(False)
-    # plt.show()
-    plt.savefig(config.LOGS_PATH + '/'+ figure_name)
+    plt.show()
+    
 
 
 ########################### SUMMARIZATION ###########################
@@ -312,7 +314,7 @@ def simplified_plot(rg_links=[], topiz=["tests"], depth=20, max_size=20, huge_da
 
     ng = simplify_graph(rg=rg, max_nodes=max_size, huge_data=huge_data) 
     
-    fig = create_graph(ng)
+    fig = plot_graph(ng)
 
     plt.show()
 
