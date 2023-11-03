@@ -1,5 +1,7 @@
 # Data manipulation
 import pandas as pd
+from tqdm import tqdm
+tqdm.pandas()
 
 # Wikipedia API
 # import wikipedia as wp
@@ -30,7 +32,8 @@ if __name__ == "__main__":
 
     df_graph = pd.read_csv(config.LOGS_PATH + '/' + 'links.csv')
     df_rank = df_graph.groupby('end').weight.sum().sort_values(ascending=False).reset_index()
-    df_rank['Qid'] = df_rank['end'].apply(lambda x: get_wikidata_qid(x))
+    # df_rank['Qid'] = df_rank['end'].apply(lambda x: get_wikidata_qid(x))
+    df_rank['Qid'] = df_rank['end'].progress_apply(lambda x: get_wikidata_qid(x))
     df_rank.to_csv(config.LOGS_PATH + '/' + 'links_plus_qids.csv', index=False)
 
     print('Finished!')
