@@ -30,13 +30,26 @@
 ##[X] 6) Sen the samples for her to analyses
 ##[X] 7) Check why some pages do not have Qids
 ##[X] 8) Check OpenRefine: Download
-
-##[ ] 9) Fix case on the graph
-##[ ] 10) remove: 
+##[X] 9) Fix case on the graph
+##[X] 10) remove: 
         i) Links that are not WP pages 
         ii) Links that are WD pages but not WP pages
+##[X] 11) Clean the code: utils + knolwdge_graph
+        i) Remove comments
+        ii) Remove ToDO tag
+        iii) Remove BUG tag
+##[ ] 12) preper code for user
+        [X] knolwdge_graph.py
+        [ ] rank_and_qid.py
+        [ ] checking_wp.py (may not necessary)
+        [ ] redo_kg.py (may not necessary)
 
-##[ ] 11) How to connect to Wikidata python
-##[ ] 12) Check open refine file she sent 
-##[ ] 13) Check OpenRefine: use
+
+##[ ] 13) Write a readme
+        i) Project description
+        ii) Documentation
+
+##[ ] 14) How to connect to Wikidata python
+##[ ] 15) Check open refine file she sent 
+##[ ] 16) Check OpenRefine: use
 
