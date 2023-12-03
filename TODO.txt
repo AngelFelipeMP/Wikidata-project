@@ -53,3 +53,10 @@
 ##[ ] 15) Check open refine file she sent 
 ##[ ] 16) Check OpenRefine: use
 
+***BLOCK THREE****
+##[ ] write script for generate a reference table with atributtes into the columns
+##[ ] write code to collect out of standudard references
+##[ ] send table to her
+##[ ] improve code to collect standudard references -> lossing part of the information 
+##[ ] generate a table with out of standudard references
+##[ ] send table to her
