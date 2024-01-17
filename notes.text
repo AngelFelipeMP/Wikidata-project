@@ -1,0 +1,8 @@
+Run sequence
+- knolwdge_graph.py
+- rank_and_qid.py
+- extract_refs.py
+- process_refs.py
+
+analyse_ref_problem
+- script to check problems in the reference extraction & processing
