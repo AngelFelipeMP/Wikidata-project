@@ -53,7 +53,7 @@ class RelationshipGenerator():
                 page = wp.page(start)
                 start = page.title
                 # remove non exiting pages and grab the written title
-                links  = clean_links(list(set(page.links)))
+                links  = clean_links(list(set(page.links))[:-10])
                 # ignore some uninteresting terms
                 links = [l for l in links if not self.ignore_term(l)]
 

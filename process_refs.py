@@ -49,21 +49,23 @@ def process_ref(page_ref_list):
     return df
 
 if __name__ == "__main__":
-    # #Load graph from a  csv file
-    # df = pd.read_csv(LOGS_PATH + '/' + 'references.csv')
-    # page_ref_list = list(zip(df['Page Title'], df['Reference']))
+    #Load graph from a  csv file
+    df = pd.read_csv(LOGS_PATH + '/' + 'references.csv')
+    page_ref_list = list(zip(df['Page Title'], df['Reference']))
     
-    # df_processed = process_ref(page_ref_list)
-    # df_processed.to_csv(LOGS_PATH + '/' + 'references-processed.csv', index=False)
-    # tqdm.write('Done!')
+    # Process the references
+    df_processed = process_ref(page_ref_list)
     
-    df_processed = pd.read_csv(LOGS_PATH + '/' + 'references-processed.csv')
+    # change the order of the columns
     columns_df_processed = df_processed.columns
-    # start_columns = ['Page','Reference','ArchiveURL','CitationClass','Periodical','Title','URL','Date','DOI','SSRN','PublicationPlace','ISBN','PublisherName','Chapter','Pages','Issue','Volume','BIBCODE','ISSN','PMC','PMID','Edition','Series']
     start_columns = ['Page','Reference','Title','URL','Date','Periodical','PublicationPlace','PublisherName','Chapter','Pages','Issue','Volume','Edition','Series','ArchiveURL','CitationClass','BIBCODE','DOI','SSRN','ISBN','ISSN','PMC','PMID']
     columns_df_processed = [ col for col in columns_df_processed if col not in start_columns]
     columns_df_processed = start_columns + columns_df_processed
     df_processed = df_processed[columns_df_processed]
     
-    df_processed.to_csv(LOGS_PATH + '/' + 'references-processed-v2.csv', index=False)
+    # save the processed references
+    df_processed.to_csv(LOGS_PATH + '/' + 'references-processed.csv', index=False)
     tqdm.write('Done!')
+    
+
+    

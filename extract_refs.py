@@ -46,7 +46,9 @@ def get_ref(page_title):
         pattern = r'<ref(?:\sname="[^"]*")?>{{[Cc]it.*?}}'
         references = re.findall(pattern, edit_page_content, re.DOTALL)
         references = [ ref.replace("\n", "") for ref in references]
-
+        
+        if not references:
+            return ['NOT-FOUND-RERERENCES']
         return references
     except:
         # print(f"References for {page_title} not found.")
@@ -59,4 +61,4 @@ if __name__ == "__main__":
                         usecols=['Page'])
     df = df.dropna()  
     ##COMMENT: get referenecs for the top 1000 pages
-    save_to_csv(df['Page'].unique()[:1000], filename='references.csv')
+    save_to_csv(df['Page'].unique()[:1000], filename='references_ref_list.csv')

@@ -17,8 +17,9 @@ def get_references(page_title):
         # citations = soup.find_all('cite')
         citations = soup.find_all('li', id=lambda x: x and x.startswith('cite_note-'))
         
-        return [cite.get_text(strip=True) for cite in citations]
-    
+        if not citations:
+            return ['NOT-FOUND-RERERENCES']
+        return citations
     except:
         # print(f"References for {page_title} not found.")
         tqdm.write(f"References for {page_title} not found.")
@@ -55,4 +56,4 @@ if __name__ == "__main__":
     df = df.dropna()  
     # all_unique_pages = pd.concat([df['start'].str.lower(), df['end'].str.lower()]).unique()
     ##COMMENT: get referenecs for the top 10 pages
-    save_to_csv(df['Page'].unique()[:1000], filename='references.csv')
+    save_to_csv(df['Page'].unique()[:1000], filename='references_ref_list.csv')
