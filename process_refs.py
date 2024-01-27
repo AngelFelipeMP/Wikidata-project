@@ -50,7 +50,7 @@ def process_ref(page_ref_list):
 
 if __name__ == "__main__":
     #Load graph from a  csv file
-    df = pd.read_csv(LOGS_PATH + '/' + 'references.csv')
+    df = pd.read_csv(LOGS_PATH + '/' + 'references_official.csv')
     page_ref_list = list(zip(df['Page Title'], df['Reference']))
     
     # Process the references

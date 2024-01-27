@@ -6,20 +6,57 @@ from config import *
 import pandas as pd
 from icecream import ic
 from tqdm import tqdm
+import requests
+
+# def get_references(page_title):
+#     """
+#     Get references from the given Wikipedia page.
+#     """
+#     try:
+#         page = wp.page(page_title)
+#         soup = BeautifulSoup(page.html(), 'html.parser')
+#         # citations = soup.find_all('cite')
+#         citations = soup.find_all('li', id=lambda x: x and x.startswith('cite_note-'))
+#         citations = [cite.get_text(strip=True) for cite in citations]
+        
+#         if not citations:
+#             return ['NOT-FOUND-RERERENCES']
+#         return citations
+#     except:
+#         # print(f"References for {page_title} not found.")
+#         tqdm.write(f"References for {page_title} not found.")
+#         return ['NOT-FOUND-PAGE']
+
+WIKIPEDIA_API_URL = "https://en.wikipedia.org/w/api.php"
 
 def get_references(page_title):
     """
     Get references from the given Wikipedia page.
     """
-    try:
-        page = wp.page(page_title)
-        soup = BeautifulSoup(page.html(), 'html.parser')
-        # citations = soup.find_all('cite')
-        citations = soup.find_all('li', id=lambda x: x and x.startswith('cite_note-'))
+    try: 
+        params = {
+            'action': 'parse',
+            'format': 'json',
+            'page': page_title,
+            'prop': 'text'
+        }
+
+        response = requests.get(WIKIPEDIA_API_URL, params=params)
+        data = response.json()
+
+
+        # soup = BeautifulSoup(page.html(), 'html.parser')
+        soup = BeautifulSoup(data["parse"]["text"]["*"], 'html.parser')
+
+        # Extract all <cite> tags which hold citation data
+        citations = soup.find_all('cite')
+        citations = [cite.get_text(strip=True) for cite in citations]
         
-        if not citations:
+        if citations:
+            return citations
+        else:
             return ['NOT-FOUND-RERERENCES']
-        return citations
+    
     except:
         # print(f"References for {page_title} not found.")
         tqdm.write(f"References for {page_title} not found.")

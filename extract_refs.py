@@ -61,4 +61,4 @@ if __name__ == "__main__":
                         usecols=['Page'])
     df = df.dropna()  
     ##COMMENT: get referenecs for the top 1000 pages
-    save_to_csv(df['Page'].unique()[:1000], filename='references_ref_list.csv')
+    save_to_csv(df['Page'].unique()[:1000], filename='references_ref_template.csv')

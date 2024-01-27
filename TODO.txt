@@ -60,3 +60,7 @@
 ##[ ] improve code to collect standudard references -> lossing part of the information 
 ##[ ] generate a table with out of standudard references
 ##[ ] send table to her
+
+
+##[ ] I must chage in the file 'Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv' to 'links_plus_qids_official.csv'
+##[ ] in documentation, I probably should give a 'name + Offical version + date' for documentation Official versions.

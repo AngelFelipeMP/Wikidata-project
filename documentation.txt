@@ -1,0 +1,44 @@
+
+run python knowledge_graph.python
+    input:
+        -> from Wikipedia web site
+    output:
+        -> Graph shaped as a table 
+            -> Standard file: 'links.csv'
+                -> Official version: 'links_official.csv'
+        -> Simplified image of the graph
+            -> Standard file: 'plot_simplified_graph.png'
+
+run python rank_and_qid.py
+    input:
+        -> Graph table
+            -> Standard file: 'links.csv'
+                -> Using: 'links_official.csv'
+    output:
+        -> Ranked table with Qids
+            -> Standard file: 'links_plus_qids.csv'
+                -> Official version: 'links_plus_qids_official.csv'
+
+run python references_old.py
+    input:
+        -> standard file: 'links_plus_qids.csv'
+            -> Using: Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv
+    output:
+        -> Standard file: 'references_ref_list.csv'
+            -> Official version: 'references_sent_Amanda_18-11-2023.csv'
+OR
+run python extract_refs.py
+    input:
+        -> Standard file: 'links_plus_qids.csv'
+            -> Using: 'Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv'
+    output:
+        -> Standard file: 'references_ref_template.csv'
+            -> Official version: 'references_official.csv' (not sure)
+
+run python process_refs.py
+    input:
+        -> Standard file: references_ref_list.csv
+            -> Using: 'references_official.csv'
+    output:
+        -> Standard file: 'references_ref_list_processed.csv'
+            -> Official version: 'references-processed-v2.csv'
