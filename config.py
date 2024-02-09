@@ -3,6 +3,7 @@ import os
 CODE_PATH = os.getcwd()
 REPO_PATH = '/'.join(CODE_PATH.split('/')[0:-1])
 LOGS_PATH = REPO_PATH + '/' + 'logs'
+WIKI_PAGES = REPO_PATH + '/''wiki_pages'
 GRAPH_FILE = 'links.csv'
 PLOT_FILE = 'my_graph.png'
 
