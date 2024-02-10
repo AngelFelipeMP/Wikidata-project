@@ -9,12 +9,16 @@ import csv
 import sys
 import os 
 
+#TODO: what todo with the "redirect_target"
+##TODO: clean comments
+
 def wiki_web_crawler(wiki_pages):
         for page in tqdm(wiki_pages):
             page_title = page.replace(' ', '_')
             page_text = request_wiki_page(page_title)
             
-            if "errorKey" not in page_text:
+            # if "errorKey" not in page_text:
+            if "source" in page_text:
                 save_wiki_page(page_title, page_text)
             
             
@@ -30,10 +34,19 @@ def save_not_fund_pages(page, error):
 def request_wiki_page(page_title):
     try:
         url = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/' + page_title
-        response = requests.get(url)
+        access_token = os.environ.get('WIKIPEDIA_ACCESS_TOKEN')
+        user_agent = 'Wikipedia_Crawler (angel.magnossao@gmail.com)'
+        
+        headers = {
+            'Authorization': 'Bearer ' + access_token,
+            'User-Agent': user_agent}
+        
+        response = requests.get(url, headers=headers)
+        # ic(response.status_code)
         wiki_json = response.json()
         
-        if "errorKey" in wiki_json:
+        # if "errorKey" in wiki_json:
+        if not "source" in wiki_json:
             save_not_fund_pages(page_title, wiki_json)
         return wiki_json
         
@@ -74,6 +87,28 @@ def count_json_files(directory):
     return json_count
 
 
+def check_json_files(directory, output_file, key, contain=True):
+    files_key = []
+    json_files = [file for file in os.listdir(directory) if file.endswith('.json')]
+
+    for file_name in json_files:
+        file_path = os.path.join(directory, file_name)
+        with open(file_path, 'r') as file:
+            try:
+                json_data = json.load(file)
+                if (key in json_data) == contain:
+                    files_key.append(file_name)
+            except json.JSONDecodeError:
+                print(f"Error decoding JSON in file: {file_name}")
+
+    output_csv_file = directory + '/' + output_file + '.csv'
+    with open(output_csv_file, 'w', newline='') as csv_file:
+        csv_writer = csv.writer(csv_file)
+        csv_writer.writerow(['Filename'])
+        csv_writer.writerows([[filename] for filename in sorted(files_key)])
+
+    return len(files_key)
+
 if __name__ == "__main__":
     #Load graph from a  csv file and crawl the nodes (wikipedia pages)
     df = pd.read_csv(LOGS_PATH + '/' + 'links_plus_qids_official.csv', usecols=['end'])
@@ -97,3 +132,11 @@ if __name__ == "__main__":
     # Print number of crawled Wikipedia pages
     json_count = count_json_files(WIKI_PAGES)
     print(f"Number of JSON files in the directory: {json_count} out of 1100")
+    
+    # Print number of json file without "source" key
+    no_source_key = check_json_files(WIKI_PAGES, 'files_without_source_', 'source', False)
+    print(f"Number of JSON files without SOURCE key: {no_source_key}")
+    
+    # Print number of json file without "source" key
+    redirect_target_key = check_json_files(WIKI_PAGES, 'files_with_redirect-target_', 'redirect_target', True)
+    print(f"Number of JSON files with REDIRECT_TARGET key: {redirect_target_key}")
