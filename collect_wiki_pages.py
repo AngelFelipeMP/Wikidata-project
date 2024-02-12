@@ -134,9 +134,9 @@ if __name__ == "__main__":
     print(f"Number of JSON files in the directory: {json_count} out of 1100")
     
     # Print number of json file without "source" key
-    no_source_key = check_json_files(LOGS_WIKI_PAGES, 'files_without_source_', 'source', False)
+    no_source_key = check_json_files(LOGS_WIKI_PAGES, 'files_without_source', 'source', False)
     print(f"Number of JSON files without SOURCE key: {no_source_key}")
     
     # Print number of json file without "source" key
-    redirect_target_key = check_json_files(LOGS_WIKI_PAGES, 'files_with_redirect-target_', 'redirect_target', True)
+    redirect_target_key = check_json_files(LOGS_WIKI_PAGES, 'files_with_redirect-target', 'redirect_target', True)
     print(f"Number of JSON files with REDIRECT_TARGET key: {redirect_target_key}")

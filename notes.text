@@ -6,3 +6,11 @@ Run sequence
 
 analyse_ref_problem
 - script to check problems in the reference extraction & processing
+
+collect_wiki_pages.py
+    - some wiki pages had title changed so they are redirected to the new page as 
+        - Biophysical_environment -> Natural_enviroment (it was already on the list)
+        - Cura_Annonae -> Cura_annonae
+        - Cultural_Institutions_Studies -> Cultural_institutions_studies
+    - after run collect_wiki_pages.py 
+        - we end up with 1099 out of 1100 wiki pages beacause of Biophysical_environment page
