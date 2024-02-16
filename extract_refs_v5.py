@@ -14,8 +14,55 @@ def ref_extractor(source_text):
     pass
     return refs
 
-def parse_templates(df):
-    pass
+def unwind_dict(d):
+    try:
+        new_dict = {}
+        for k, v in d.items():
+            if isinstance(v, list):
+                for i, item in enumerate(v, start=1):
+                    new_dict[k+'_'+str(i)] = item['first'] + ' ' + item['last']
+            elif isinstance(v, dict):
+                for k2, v2 in v.items():
+                    new_dict[k2] = v2
+            else:
+                new_dict[k] = v
+        return new_dict
+                
+    except:
+        return {}
+    
+def parser(page_ref_list):
+    # get attributes fron the reference
+    for j, (page, ref) in enumerate(tqdm(page_ref_list, desc="PARSING")):
+        wikicode = mwparserfromhell.parse(ref)
+        tpl = wikicode.filter_templates()[0]
+        parsed = parse_citation_template(tpl)
+        
+        # process discto to a plan dict
+        unwind_parsed = unwind_dict(parsed)
+        
+        # add originary page and reference
+        combined_dict = {**{'Page':page, 'Reference':ref}, **unwind_parsed}
+        
+        # create a dataframe from the dict
+        if j==0:
+            df = pd.DataFrame([combined_dict])
+        else:
+            new_df = pd.DataFrame([combined_dict])
+            df = pd.concat([df, new_df])
+    return df
+
+def parse_templates(df): ##CHECK
+    df_true_template = df[df['template'].notnull() & (df['template'] != '')] ##CHECK
+    page_ref_list = list(zip(df_true_template['page'], df_true_template['Reference']))
+    df_processed = parser(page_ref_list) ##CHECK
+    
+    df_merge = pd.merge(df, df_processed, on='template', how='left') ##CHECK
+
+    center_columns = ['Title','URL','Date','Periodical','PublicationPlace','PublisherName','Chapter','Pages','Issue',
+                    'Volume','Edition','Series','ArchiveURL','CitationClass','BIBCODE','DOI','SSRN','ISBN','ISSN','PMC','PMID']
+    return df_merge[df.columns + center_columns + [col for col in df_processed.columns if col not in center_columns]] ##CHECK
+
 
 def count_ref_types(df):
     values=()
