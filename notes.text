@@ -14,3 +14,7 @@ collect_wiki_pages.py
         - Cultural_Institutions_Studies -> Cultural_institutions_studies
     - after run collect_wiki_pages.py 
         - we end up with 1099 out of 1100 wiki pages beacause of Biophysical_environment page
+
+
+
+#'{{cite', '{{Cite', '{{ cite', '{{ Cite', '{{ wikicite', '{{ Wikicite', '{{wikicite', '{{Wikicite', '{{vcite', '{{Vcite', '{{ vcite', '{{ Vcite',  'http://www'

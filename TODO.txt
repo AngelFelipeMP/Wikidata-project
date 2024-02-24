@@ -64,3 +64,7 @@
 
 ##[ ] I must chage in the file 'Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv' to 'links_plus_qids_official.csv'
 ##[ ] in documentation, I probably should give a 'name + Offical version + date' for documentation Official versions.
+##[ ] I must dele test.py
+##[ ] I may delete checking_wp.py
+##[ ] I may improve the code not removing "\n" -> text = text.replace("\n", " ")
+##[ ] I may create a option for 'mix' template + text 
