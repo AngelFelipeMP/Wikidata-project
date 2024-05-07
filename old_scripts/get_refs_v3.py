@@ -39,8 +39,18 @@ def get_ref_list(page_title):
     data = response.json()
     
     print(data['parse']['text']['*'])
+    
+def wiki_original(page):
+    import requests
+
+    # page = 'Earth'
+    url = 'https://api.wikimedia.org/core/v1/wikipedia/en/page/' + page
+
+    response = requests.get(url)
+    data = response.json()
+    print(data)
         
         
 if __name__ == "__main__":
-    page_title = 'Cultural history'
-    get_ref_list(page_title)
+    page_title = 'Need'
+    wiki_original(page_title)

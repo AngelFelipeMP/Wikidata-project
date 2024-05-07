@@ -1,0 +1,38 @@
+
+run python knowledge_graph.py
+    input:
+        -> from Wikipedia web site
+    output:
+        -> Graph shaped as a table 
+            -> Standard file: 'links.csv'
+                -> Official version: 'links_official.csv'
+        -> Simplified image of the graph
+            -> Standard file: 'plot_simplified_graph.png'
+
+run python rank_and_qid.py
+    input:
+        -> Graph table
+            -> Standard file: 'links.csv'
+                -> Using: 'links_official.csv'
+    output:
+        -> Ranked table with Qids
+            -> Standard file: 'links_plus_qids.csv'
+                -> Official version: 'links_plus_qids_official.csv'
+
+run python collect_wiki_pages
+    input:
+        standar -> -> standard file: 'links_plus_qids.csv'
+        after expert curation -> 'Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv'
+    output:
+        -> Wikipedia pages text sorce (.json)
+        -> logs:
+            -> not_found_wiki_pages.csv (only it the script miss a wiki page)
+            -> files_with_redirect-target.csv
+            -> files_without_source.csv
+
+run python extract_refs_v5.py
+    input:
+        -> Wikipedia pages text sorce (.json)
+    output:
+        -> 'wikipedia_references.csv'
+        -> 'wikipedia_number_of_references.csv'

@@ -13,14 +13,16 @@ import os
 def wiki_web_crawler(wiki_pages):
         for page in tqdm(wiki_pages):
             page_title = page.replace(' ', '_')
+            # page_title = page.replace('/', '%2F')
             page_text = request_wiki_page(page_title)
             
             if "source" in page_text:
-                save_wiki_page(page_text)
+                save_wiki_page(page_text, page_title)
             
             
-def save_wiki_page(page_text):
-    with open(WIKI_PAGES + '/' + page_text['key'] + '.json', 'w', encoding='utf-8') as file:
+def save_wiki_page(page_text, page_title):
+    # with open(WIKI_PAGES + '/' + page_text['key'] + '.json', 'w', encoding='utf-8') as file:
+    with open(WIKI_PAGES + '/' + page_title + '.json', 'w', encoding='utf-8') as file:
         file.write(json.dumps(page_text, ensure_ascii=False, indent=4))
 
 def save_not_fund_pages(page, error):
@@ -111,9 +113,16 @@ def check_json_files(directory, output_file, key, contain=True):
 
 if __name__ == "__main__":
     #Load graph from a  csv file and crawl the nodes (wikipedia pages)
-    df = pd.read_csv(LOGS_PATH + '/' + 'links_plus_qids_official.csv', usecols=['end'])
+    # df = pd.read_csv(LOGS_PATH + '/' + 'links_plus_qids_official.csv', usecols=['end']) ##TODO: Uncomment and delet line below
+    df = pd.read_csv(LOGS_PATH + '/' + 'Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv', usecols=['Page'])
+    df = df.dropna(how='any')
+    df = df.reset_index(drop=True)
+    
+    top_pages = 1500
+    
     tqdm.write(f'Crawl Wikipedia Pages')
-    wiki_web_crawler(df['end'].unique()[:1100])
+    # wiki_web_crawler(df['end'].unique()[:1100])
+    wiki_web_crawler(df['Page'].unique()[:top_pages])
     
     #Load not fund wiki pages from a csv file and crawl those pages
     for i in range(1,4):
@@ -131,7 +140,7 @@ if __name__ == "__main__":
             
     # Print number of crawled Wikipedia pages
     json_count = count_json_files(WIKI_PAGES)
-    print(f"Number of JSON files in the directory: {json_count} out of 1100")
+    print(f"Number of JSON files in the directory: {json_count} out of {top_pages}")
     
     # Print number of json file without "source" key
     no_source_key = check_json_files(LOGS_WIKI_PAGES, 'files_without_source', 'source', False)

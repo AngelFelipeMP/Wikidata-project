@@ -22,7 +22,7 @@ run python rank_and_qid.py
 run python references_old.py
     input:
         -> standard file: 'links_plus_qids.csv'
-            -> Using: Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv
+            -> Using: 'Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv'
     output:
         -> Standard file: 'references_ref_list.csv'
             -> Official version: 'references_sent_Amanda_18-11-2023.csv'
@@ -45,10 +45,17 @@ run python process_refs.py
 OR
 run python collect_wiki_pages
     input:
-        -> 'links_plus_qids_official.csv'
+        -> 'Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv'
     output:
         -> Wikipedia pages text sorce (.json)
         -> logs:
             -> not_found_wiki_pages.csv (only it the script miss a wiki page)
             -> files_with_redirect-target.csv
             -> files_without_source.csv
+
+run python extract_refs_v5.py
+    input:
+        -> Wikipedia pages text sorce (.json)
+    output:
+        -> 'wikipedia_references.csv'
+        -> 'wikipedia_number_of_references.csv'

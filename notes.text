@@ -15,6 +15,9 @@ collect_wiki_pages.py
     - after run collect_wiki_pages.py 
         - we end up with 1099 out of 1100 wiki pages beacause of Biophysical_environment page
 
+Data curation
+- Expert remove not meaningful Wikipedia pages from  'links_plus_qids.csv'/'links_plus_qids_official.csv'
+    - Output: Wikipedia-links-plus-QID-27-Oct-2023-final-list-14-Nov-2023.csv
 
 
 #'{{cite', '{{Cite', '{{ cite', '{{ Cite', '{{ wikicite', '{{ Wikicite', '{{wikicite', '{{Wikicite', '{{vcite', '{{Vcite', '{{ vcite', '{{ Vcite',  'http://www'
